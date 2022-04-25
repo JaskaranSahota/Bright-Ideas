@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User all Thoughts</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    
+</head>
+<body>
+    <div class="d-flex justify-content-around align-items-center col-12 top">
+        <a href="/wall" class="btn button-color">Dashboard</a>
+        <h1 class="text-center">Bright Ideas</h1>
+        <a href="/logout" class="btn button-color">Logout</a>
+    </div>
+    <div class="d-flex justify-content-center align-items-center col-12 top">
+        <div class="col-12 text-light">
+            <div class="card body-color my-2">
+                <div class="card-body">
+                    <h3 class="card-title allideas">   {{user_thought.first_name}}'s Ideas</h3>
+                        {% for thought in thoughts %}
+                        <ul>
+                        <li><h4 class="card-text">Idea : {{thought.content}}</h4></li></ul>
+                            <h5 class="like">Liked by</h4>
+                            {% for liker in thought.likers %}
+                              <h4 class="like">Name :<a href="/userinfo/{{liker.id}}" class="body-color">  {{liker.first_name}} {{liker.last_name}}</a></h5>
+                            {% endfor %}
+                            <hr>
+                        {% endfor %}
+                        <h3 class="allideas"><a href="/userinfo/{{user_thought.id}}" class="body-color">Contact</a></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+</html>

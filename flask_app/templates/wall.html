@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="d-flex justify-content-around align-items-center col-12 top">
+        <h2 class="text-center">Welcome {{user.first_name}}!!!</h1>
+        <h1 class="text-center">Bright Ideas</h1>
+        <a href="/logout" class="btn button-color">Logout</a>
+    </div>
+    <div class="d-flex  justify-content-around  align-items-center  col-12 ">
+        <form action="/add_thought" method="POST" class="col-12 p-3 my-color">
+            <h3 class="text-center my-color">Add new Idea</h3>
+            {% with messages = get_flashed_messages(category_filter=['add_thought']) %}
+                {% if messages %}
+                <div class="alert alert-danger" role="alert">
+                    <strong>Flash AHHHHHHH!!!!</strong>
+                        {% for message in messages %}
+                            <p>{{message}}</p>
+                        {% endfor %}
+                </div>
+                {% endif %}
+            {% endwith %}
+            {% with messages = get_flashed_messages(category_filter=['add_successful']) %}
+            {% if messages %}
+            <div class="alert alert-success" role="alert">
+                <strong>Congrats!!!!</strong>
+                    {% for message in messages %}
+                    <p>{{message}}</p>
+                    {% endfor %}
+            </div>
+            {% endif %}
+        {% endwith %}
+            <div class="form-group">
+                <textarea class="big" name="content" cols="5" rows="3" required class="form-control"></textarea><br>
+                <button class="add" type="submit" value="Submit" class="form-control">Submit</button>
+            </form>
+            <div class="col-7 p-3 body-color">
+                <div class="card body-color my-2">
+                    <div class="card-body">
+                        {% for thought in thoughts %}
+                            <h4 class="card-title body-color"><a href="/user_post/{{thought.user.id}}" class="body-color">{{thought.user.first_name}} </a>said</h4>
+                            <p class="card-text">{{thought.content}}</p>
+                            {% if thought.id in thoughts_user_liked %} 
+                            {{thought.users_who_liked |length}} people like this 
+                                   <a href="/unlike/{{thought.id}}" class="btn btn-danger">unlike</a>
+                            {% else %} 
+                            {{thought.users_who_liked |length}} people like this 
+                                    <a href="/like/{{thought.id}}" class="btn btn-success">Like</a>
+                            {% endif %}
+                            {% if thought.register_id==session['user_id'] %}
+                            <a href="/delete/{{thought.id}}" class="btn btn-warning">Delete</a>
+                            {% endif %}
+                            <hr>
+                        {% endfor %}
+                        </div>
+                </div>
+         </div>
+    </div>
+</body>
+</html>
